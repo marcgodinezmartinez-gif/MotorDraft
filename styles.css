@@ -1387,3 +1387,84 @@ body {
   border-color: var(--neon-cyan);
 }
 
+/* ============================================================================
+   MOBILE SPECIFIC OPTIMIZATIONS (width <= 576px)
+   ============================================================================ */
+@media (max-width: 576px) {
+  body {
+    padding: 5px;
+  }
+  
+  .game-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .header-logo h1 {
+    font-size: 20px;
+  }
+
+  .header-audio-control {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-large {
+    font-size: 11px;
+    padding: 10px 16px;
+  }
+
+  .btn-small {
+    font-size: 8px;
+    padding: 4px 8px;
+  }
+
+  /* Reduce font sizes inside tables to prevent overflow */
+  .table-retro td, .table-retro th {
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  /* Make draft slots grid 2 columns on very small devices */
+  .draft-slots-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Optimal range bar slider adjustments */
+  .slider-retro::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Pre-race instructions padding */
+  .rule-warning-card p, .recommended-strategy-card p {
+    font-size: 12px;
+  }
+
+  /* Live commentary feed font size */
+  .live-feed-box {
+    font-size: 13px;
+    height: 220px;
+  }
+
+  .driver-status-text {
+    font-size: 11px;
+  }
+
+  /* Season summary badges size adjustment */
+  .summary-pos-badge .pos-number {
+    font-size: 16px;
+  }
+  
+  .summary-pos-badge .pos-count {
+    font-size: 9px;
+  }
+  
+  .summary-stat-row {
+    font-size: 11px;
+  }
+}
+
