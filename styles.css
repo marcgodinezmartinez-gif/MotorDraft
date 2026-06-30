@@ -1387,6 +1387,15 @@ body {
   border-color: var(--neon-cyan);
 }
 
+.menu-logo-img {
+  max-width: 480px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 10px auto;
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(0, 245, 212, 0.25));
+}
+
 /* ============================================================================
    MOBILE SPECIFIC OPTIMIZATIONS (width <= 576px)
    ============================================================================ */
