@@ -2997,7 +2997,7 @@ class App {
   async simulateFullChampionshipStoryMode() {
     this.switchScreen('story');
     this.storySkipRequested = false;
-    document.getElementById('btn-story-skip').classList.remove('hidden');
+    document.getElementById('btn-story-skip').classList.add('hidden'); // Hide skip button as it is instant now
     document.getElementById('story-title').innerText = 'SIMULACIÓN DEL CAMPEONATO';
     document.getElementById('story-subtitle').innerText = 'Campeonato en curso...';
 
@@ -3011,31 +3011,17 @@ class App {
     const startIdx = this.championship.currentRaceIndex;
 
     for (let gpIdx = startIdx; gpIdx < totalGPs; gpIdx++) {
-      if (this.storySkipRequested) {
-        // Simulate remaining GPs instantly without animation
-        this.championship.currentRaceIndex = gpIdx;
-        this.simulateQualiInstant();
-        const strat = this.generateAutoStrategy();
-        this.simulator.initRace(this.simulator.qualiStandings, strat);
-        this.runInstantRace();
-        this.championship.awardPoints(this.simulator.participants);
-        this.trackGPStats();
-        continue;
-      }
-
       this.championship.currentRaceIndex = gpIdx;
       const circuit = this.championship.getCurrentCircuit();
 
       // Ticker: GP header
       this.addTickerLine(`🏁 GP ${gpIdx + 1}/${totalGPs} — ${circuit.name.toUpperCase()}`, 'gp-header');
-      await this.delay(400);
 
       // Simulate Quali
       this.simulateQualiInstant();
       const qualiP1 = this.simulator.qualiStandings.findIndex(q => q.driver.baseId === this.userTeam.Driver1.baseId) + 1;
       const qualiP2 = this.simulator.qualiStandings.findIndex(q => q.driver.baseId === this.userTeam.Driver2.baseId) + 1;
       this.addTickerLine(`⏱️ Clasificación: ${this.userTeam.Driver1.name} P${qualiP1}, ${this.userTeam.Driver2.name} P${qualiP2}`);
-      await this.delay(600);
 
       // Simulate Race
       const strat = this.generateAutoStrategy();
@@ -3070,8 +3056,6 @@ class App {
 
       // Update standings display
       this.renderStoryStandings();
-
-      await this.delay(this.storySkipRequested ? 50 : 2500);
     }
 
     // Championship complete
@@ -3116,7 +3100,6 @@ class App {
     document.getElementById('story-subtitle').innerText = 'Simulando GP...';
 
     this.addTickerLine(`🏁 GP DE ${circuit.name.toUpperCase()}`, 'gp-header');
-    await this.delay(500);
 
     // Race simulation
     this.simulator.initRace(this.simulator.qualiStandings, strat);
@@ -3136,7 +3119,6 @@ class App {
     // Narrate results
     const winner = this.simulator.participants.find(p => p.status === 'active');
     if (winner) this.addTickerLine(`🏆 Ganador: ${winner.driver.name}`, winner.isUserDriver ? 'highlight' : '');
-    await this.delay(400);
 
     [this.userTeam.Driver1, this.userTeam.Driver2].forEach(ud => {
       const p = this.simulator.participants.find(pp => pp.driver.baseId === ud.baseId);
@@ -3147,8 +3129,6 @@ class App {
       else if (pos <= 3) this.addTickerLine(`🎉 ${ud.name}: P${pos} ¡PODIO!`, 'highlight');
       else this.addTickerLine(`📊 ${ud.name}: P${pos}`);
     });
-
-    await this.delay(800);
 
     document.getElementById('story-subtitle').innerText = 'GP finalizado';
     document.getElementById('btn-story-skip').innerText = 'VER RESULTADOS';
