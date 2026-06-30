@@ -3164,7 +3164,9 @@ class App {
     line.className = `story-ticker-line ${cssClass}`;
     line.innerHTML = text;
     feed.appendChild(line);
-    feed.scrollTop = feed.scrollHeight;
+    if (feed.parentElement) {
+      feed.parentElement.scrollTop = feed.parentElement.scrollHeight;
+    }
   }
 
   renderStoryStandings() {
