@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MotorDraft - Videojuego retro de gestión estratégica de automovilismo de 8-bit.">
+  <title>MotorDraft - Retro Motorsport Manager</title>
+  <!-- Google Fonts for retro pixel art styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=4.0">
+</head>
+
+<body>
+  <!-- Retro scanlines overlay for CRT effect -->
+  <div class="crt-overlay"></div>
+
+  <div class="game-container">
+    <!-- Header -->
+    <header class="game-header">
+      <div class="header-logo">
+        <h1 class="glitch-text">MOTORDRAFT</h1>
+        <span class="header-tagline">RETRO MOTORSPORT STRATEGY</span>
+      </div>
+      <div class="header-audio-control" style="display: flex; gap: 8px;">
+        <button id="btn-lang-toggle" class="btn-retro btn-small">ESP</button>
+        <button id="btn-audio-toggle" class="btn-retro btn-small" data-i18n="audio_on">SONIDO: ON</button>
+      </div>
+    </header>
+
+    <!-- Main Screens Container -->
+    <main class="game-screens"> <!-- SCREEN 1: MAIN MENU -->
+      <section id="screen-menu" class="screen active">
+        <div class="menu-banner">
+          <pre class="ascii-art"><h1>MOTOR DRAFT</h1></pre>
+          </pre>
+        </div>
+        <div class="menu-intro card-retro">
+          <h2 data-i18n="menu_title">MUNDIAL DE ESTRATEGIA F1 RETRO</h2>
+          <p data-i18n="menu_desc1">Toma el control de tu propia escudería histórica. Selecciona chasis, motor,
+            neumáticos y pilotos de cuatro décadas legendarias en nuestro draft inicial y compite en un mundial de 10
+            carreras.</p>
+          <p data-i18n="menu_desc2">Gestiona la degradación, decide cuándo parar en boxes y ordena a tus pilotos atacar
+            o conservar. ¿Podrás conquistar el campeonato de constructores?</p>
+        </div>
+        <div class="menu-actions">
+          <button id="btn-start-game" class="btn-retro btn-large" data-i18n="menu_start">COMENZAR NUEVA
+            TEMPORADA</button>
+        </div>
+        <div class="menu-footer">
+          <span data-i18n="menu_footer">v1.0.0 - HECHO EN ESPAÑA - CLIENT-SIDE ONLY</span>
+        </div>
+      </section>
+      </section>
+
+      <!-- SCREEN 2: THE DRAFT -->
+      <section id="screen-draft" class="screen">
+        <div class="draft-header card-retro text-center">
+          <h2 class="text-accent"><span data-i18n="draft_round">RONDA DRAFT</span> <span id="draft-round-num">1</span>/6
+          </h2>
+          <p><span data-i18n="draft_category">Categoría actual a elegir:</span> <strong id="draft-category-title"
+              class="text-highlight">PILOTO 1</strong></p>
+          <div class="draft-progress-bar-container">
+            <div id="draft-progress" class="draft-progress-bar" style="width: 16.6%;"></div>
+          </div>
+        </div>
+
+        <!-- 3 Draft Options Container -->
+        <div id="draft-options" class="draft-options-grid">
+          <!-- Dynamically filled with javascript -->
+        </div>
+
+        <!-- Current Team Status -->
+        <div class="draft-team-preview card-retro">
+          <h3 data-i18n="draft_team_status">ESTADO DE TU ESCUDERÍA</h3>
+          <div class="draft-slots-grid">
+            <div class="draft-slot" id="slot-Chassis">
+              <span class="slot-label" data-i18n="slot_chassis">CHASIS</span>
+              <span class="slot-value" data-i18n="slot_empty">Vacío</span>
+            </div>
+            <div class="draft-slot" id="slot-Engine">
+              <span class="slot-label" data-i18n="slot_engine">MOTOR</span>
+              <span class="slot-value" data-i18n="slot_empty">Vacío</span>
+            </div>
+            <div class="draft-slot" id="slot-Tyres">
+              <span class="slot-label" data-i18n="slot_tyres">NEUMÁTICOS</span>
+              <span class="slot-value" data-i18n="slot_empty">Vacío</span>
+            </div>
+            <div class="draft-slot" id="slot-Driver1">
+              <span class="slot-label" data-i18n="slot_d1">PILOTO 1</span>
+              <span class="slot-value" data-i18n="slot_empty">Vacío</span>
+            </div>
+            <div class="draft-slot" id="slot-Driver2">
+              <span class="slot-label" data-i18n="slot_d2">PILOTO 2</span>
+              <span class="slot-value" data-i18n="slot_empty">Vacío</span>
+            </div>
+            <div class="draft-slot" id="slot-Principal">
+              <span class="slot-label" data-i18n="slot_principal">JEFE DE EQUIPO</span>
+              <span class="slot-value" data-i18n="slot_empty">Vacío</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: SEASON DASHBOARD -->
+      <section id="screen-dashboard" class="screen">
+        <div class="dashboard-grid">
+          <!-- Column 1: Team & Next Race -->
+          <div class="dashboard-col">
+            <div class="card-retro my-team-card">
+              <h2 class="text-accent" data-i18n="dash_title">TU ESCUDERÍA</h2>
+              <div class="team-details">
+                <div class="detail-item"><span class="label" data-i18n="dash_label_drivers">Pilotos:</span> <span
+                    id="dash-drivers" class="value">--</span></div>
+                <div class="detail-item"><span class="label" data-i18n="dash_label_chassis">Chasis:</span> <span
+                    id="dash-chassis" class="value">--</span></div>
+                <div class="detail-item"><span class="label" data-i18n="dash_label_engine">Motor:</span> <span
+                    id="dash-engine" class="value">--</span></div>
+                <div class="detail-item"><span class="label" data-i18n="dash_label_tyres">Neumáticos:</span> <span
+                    id="dash-tyres" class="value">--</span></div>
+                <div class="detail-item"><span class="label" data-i18n="dash_label_principal">Jefe Equipo:</span> <span
+                    id="dash-principal" class="value">--</span></div>
+              </div>
+            </div>
+
+            <div class="card-retro next-race-card">
+              <h2 class="text-accent"><span data-i18n="dash_next_gp">PRÓXIMA CARRERA</span> (<span
+                  id="dash-race-num">1</span>/10)</h2>
+              <div class="circuit-banner">
+                <h3 id="dash-circuit-name" class="text-highlight">MONZA</h3>
+                <p id="dash-circuit-desc">Templo de la velocidad...</p>
+              </div>
+              <div class="circuit-stats-grid">
+                <div class="circ-stat">
+                  <span class="label" data-i18n="dash_stat_speed">Velocidad</span>
+                  <div class="stat-bar-container">
+                    <div id="dash-circ-engine" class="stat-bar bg-cyan" style="width: 80%;"></div>
+                  </div>
+                </div>
+                <div class="circ-stat">
+                  <span class="label" data-i18n="dash_stat_aero">Carga Aero</span>
+                  <div class="stat-bar-container">
+                    <div id="dash-circ-aero" class="stat-bar bg-magenta" style="width: 30%;"></div>
+                  </div>
+                </div>
+                <div class="circ-stat">
+                  <span class="label" data-i18n="dash_stat_wear">Desgaste</span>
+                  <div class="stat-bar-container">
+                    <div id="dash-circ-wear" class="stat-bar bg-yellow" style="width: 50%;"></div>
+                  </div>
+                </div>
+              </div>
+              <button id="btn-go-to-quali" class="btn-retro btn-large w-full mt-10" data-i18n="dash_go_quali">IR A
+                CLASIFICACIÓN (QUALI)</button>
+              <button id="btn-sim-championship" class="btn-retro btn-small w-full mt-10" style="opacity:0.85"
+                data-i18n="dash_sim_champ">⚡ SIMULAR CAMPEONATO COMPLETO</button>
+            </div>
+          </div>
+
+          <!-- Column 2: Standings -->
+          <div class="dashboard-col">
+            <div class="card-retro standings-card">
+              <div class="standings-tabs">
+                <button id="tab-drivers" class="tab-btn active" data-i18n="tab_drivers">PILOTOS</button>
+                <button id="tab-constructors" class="tab-btn" data-i18n="tab_constructors">CONSTRUCTORES</button>
+              </div>
+
+              <!-- Drivers Standings Table -->
+              <div id="standings-drivers-view" class="standings-table-container">
+                <table class="table-retro">
+                  <thead>
+                    <tr>
+                      <th style="width: 10%">POS</th>
+                      <th style="width: 50%">PILOTO</th>
+                      <th style="width: 25%">ERA</th>
+                      <th style="width: 15%">PTS</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dash-standings-drivers-body">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Constructors Standings Table -->
+              <div id="standings-constructors-view" class="standings-table-container hidden">
+                <table class="table-retro">
+                  <thead>
+                    <tr>
+                      <th style="width: 10%">POS</th>
+                      <th style="width: 60%">CONSTRUCTOR / COMPONENTES</th>
+                      <th style="width: 30%">PTS</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dash-standings-constructors-body">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: QUALIFYING SIMULATION -->
+      <section id="screen-quali" class="screen">
+        <div class="section-title-bar card-retro">
+          <div class="title-left">
+            <h2 data-i18n="quali_title">SESIÓN DE CLASIFICACIÓN</h2>
+            <p><span data-i18n="circuit_label">Circuito:</span> <strong id="quali-circuit-name"
+                class="text-highlight">--</strong></p>
+          </div>
+          <div class="title-right text-right">
+            <div class="retro-timer" id="quali-timer">10:00</div>
+            <span class="pulse-text text-red font-bold" data-i18n="quali_live">EN DIRECTO</span>
+          </div>
+        </div>
+
+        <div class="quali-grid">
+          <!-- Leaderboard in Real Time -->
+          <div class="card-retro quali-leaderboard">
+            <h3>TIEMPOS DE CLASIFICACIÓN</h3>
+            <div class="table-wrapper">
+              <table class="table-retro table-mini">
+                <thead>
+                  <tr>
+                    <th style="width: 10%">POS</th>
+                    <th style="width: 45%">PILOTO</th>
+                    <th style="width: 25%">MEJOR VUELTA</th>
+                    <th style="width: 20%">DIFERENCIA</th>
+                  </tr>
+                </thead>
+                <tbody id="quali-leaderboard-body">
+                  <!-- Dynamic -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Activity / Sector Log -->
+          <div class="card-retro quali-feed">
+            <h3 data-i18n="quali_telemetry">TELEMETRÍA EN TIEMPO REAL</h3>
+            <div id="quali-live-feed" class="live-feed-box">
+              <!-- Logs dynamic -->
+            </div>
+            <div class="quali-actions mt-10">
+              <button id="btn-skip-quali" class="btn-retro btn-small" data-i18n="quali_skip">OMITIR ANIMACIÓN</button>
+              <button id="btn-start-race" class="btn-retro btn-large hidden w-full" data-i18n="quali_go_strat">IR A
+                PLANIFICAR ESTRATEGIA</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.5: PRE-RACE STRATEGY PLANNING -->
+      <section id="screen-pre-race" class="screen">
+        <div class="section-title-bar card-retro">
+          <div class="title-left">
+            <h2 data-i18n="strat_title">PLANIFICACIÓN DE ESTRATEGIA</h2>
+            <p><span data-i18n="circuit_label">Circuito:</span> <strong id="pre-circuit-name"
+                class="text-highlight">--</strong> &mdash; <span id="pre-total-laps" class="text-accent">18</span> <span
+                data-i18n="laps_label">vueltas</span></p>
+          </div>
+          <div class="title-right text-right">
+            <span class="pulse-text text-accent font-bold" data-i18n="strat_fia_rules_title">REGLAMENTACIÓN FIA</span>
+          </div>
+        </div>
+
+        <div class="card-retro rule-warning-card">
+          <h3 class="text-red" data-i18n="strat_rules">⚠️ REGLA DE NEUMÁTICOS OBLIGATORIA (CARRERAS EN SECO)</h3>
+          <p data-i18n="strat_rules_desc">Es obligatorio realizar al menos <strong>una parada en boxes</strong> y
+            utilizar <strong>dos compuestos de seco diferentes</strong> (Blando, Medio, Duro). Si la carrera transcurre
+            en seco y no se cumple esta norma, el monoplaza será <strong class="text-red">Descalificado (DSQ)</strong>
+            al cruzar la bandera a cuadros.</p>
+        </div>
+
+        <!-- Recommended strategy -->
+        <div class="card-retro recommended-strategy-card">
+          <h3 class="text-cyan" data-i18n="strat_recommended">💡 ESTRATEGIA RECOMENDADA</h3>
+          <p id="pre-recommended-text" class="text-light">Calculando...</p>
+        </div>
+
+        <div class="pre-race-grid">
+          <!-- Driver 1 Strategy Card -->
+          <div class="card-retro pre-driver-card" id="pre-card-d1">
+            <h3 id="pre-d1-title">ESTRATEGIA: PILOTO 1</h3>
+            <div class="strategy-form-group">
+              <label for="pre-d1-start-tyre" data-i18n="strat_start_tyre">Compuesto de Salida:</label>
+              <select id="pre-d1-start-tyre" class="select-retro w-full">
+                <option value="Soft" data-i18n="opt_soft_desc">Blando (Seco / Rápido)</option>
+                <option value="Medium" selected data-i18n="opt_medium_desc">Medio (Seco / Equilibrado)</option>
+                <option value="Hard" data-i18n="opt_hard_desc">Duro (Seco / Duradero)</option>
+              </select>
+            </div>
+            <div class="strategy-form-group mt-10">
+              <label><span data-i18n="strat_pit_lap">Vuelta de parada:</span> <strong id="pre-d1-pit-lap-display"
+                  class="text-highlight">8</strong></label>
+              <div class="slider-container">
+                <div class="slider-optimal-range" id="pre-d1-optimal-range"></div>
+                <input type="range" id="pre-d1-pit-lap" class="slider-retro" min="2" max="17" value="8">
+              </div>
+              <div class="slider-labels"><span data-i18n="lbl_lap_2">Vta 2</span><span id="pre-d1-slider-max">Vta
+                  17</span></div>
+            </div>
+            <div class="strategy-form-group mt-10">
+              <label for="pre-d1-next-tyre" data-i18n="strat_next_tyre">Compuesto tras la parada:</label>
+              <select id="pre-d1-next-tyre" class="select-retro w-full">
+                <option value="Soft" data-i18n="opt_soft">Blando</option>
+                <option value="Medium" data-i18n="opt_medium">Medio</option>
+                <option value="Hard" selected data-i18n="opt_hard">Duro</option>
+                <option value="Intermediate" data-i18n="opt_inter">Intermedios</option>
+                <option value="Wet" data-i18n="opt_wet">Lluvia Extrema</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Driver 2 Strategy Card -->
+          <div class="card-retro pre-driver-card" id="pre-card-d2">
+            <h3 id="pre-d2-title">ESTRATEGIA: PILOTO 2</h3>
+            <div class="strategy-form-group">
+              <label for="pre-d2-start-tyre" data-i18n="strat_start_tyre">Compuesto de Salida:</label>
+              <select id="pre-d2-start-tyre" class="select-retro w-full">
+                <option value="Soft" data-i18n="opt_soft_desc">Blando (Seco / Rápido)</option>
+                <option value="Medium" selected data-i18n="opt_medium_desc">Medio (Seco / Equilibrado)</option>
+                <option value="Hard" data-i18n="opt_hard_desc">Duro (Seco / Duradero)</option>
+              </select>
+            </div>
+            <div class="strategy-form-group mt-10">
+              <label><span data-i18n="strat_pit_lap">Vuelta de parada:</span> <strong id="pre-d2-pit-lap-display"
+                  class="text-highlight">9</strong></label>
+              <div class="slider-container">
+                <div class="slider-optimal-range" id="pre-d2-optimal-range"></div>
+                <input type="range" id="pre-d2-pit-lap" class="slider-retro" min="2" max="17" value="9">
+              </div>
+              <div class="slider-labels"><span data-i18n="lbl_lap_2">Vta 2</span><span id="pre-d2-slider-max">Vta
+                  17</span></div>
+            </div>
+            <div class="strategy-form-group mt-10">
+              <label for="pre-d2-next-tyre" data-i18n="strat_next_tyre">Compuesto tras la parada:</label>
+              <select id="pre-d2-next-tyre" class="select-retro w-full">
+                <option value="Soft" data-i18n="opt_soft">Blando</option>
+                <option value="Medium" data-i18n="opt_medium">Medio</option>
+                <option value="Hard" selected data-i18n="opt_hard">Duro</option>
+                <option value="Intermediate" data-i18n="opt_inter">Intermedios</option>
+                <option value="Wet" data-i18n="opt_wet">Lluvia Extrema</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="pre-race-actions mt-10" style="display:flex;gap:10px;">
+          <button id="btn-confirm-strategy" class="btn-retro btn-large w-full font-bold"
+            data-i18n="strat_confirm">CONFIRMAR ESTRATEGIA Y COMENZAR GP</button>
+          <button id="btn-sim-gp" class="btn-retro btn-small" style="white-space:nowrap;" data-i18n="strat_sim_gp">⚡
+            SIMULAR GP</button>
+        </div>
+      </section>
+
+      <!-- SCREEN: STORY MODE (Auto-simulation ticker) -->
+      <section id="screen-story" class="screen">
+        <div class="section-title-bar card-retro">
+          <div class="title-left">
+            <h2 id="story-title" data-i18n="story_title">SIMULACIÓN AUTOMÁTICA</h2>
+            <p id="story-subtitle" class="text-accent" data-i18n="story_subtitle">Campeonato en curso...</p>
+          </div>
+          <div class="title-right text-right">
+            <div class="pulse-text text-red font-bold" data-i18n="quali_live">EN DIRECTO</div>
+          </div>
+        </div>
+        <div class="card-retro story-ticker-card">
+          <div id="story-ticker-feed" class="story-ticker-feed">
+            <!-- Dynamic ticker lines -->
+          </div>
+        </div>
+        <div class="card-retro mt-10">
+          <h3 class="text-accent" data-i18n="story_live_standings">CLASIFICACIÓN EN VIVO</h3>
+          <div class="story-standings-grid">
+            <div>
+              <h4 data-i18n="tab_drivers">Pilotos</h4>
+              <div id="story-drivers-standings" class="story-mini-standings"></div>
+            </div>
+            <div>
+              <h4 data-i18n="tab_constructors">Constructores</h4>
+              <div id="story-constructors-standings" class="story-mini-standings"></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-10 text-center">
+          <button id="btn-story-skip" class="btn-retro btn-small hidden" data-i18n="story_skip_btn">SALTAR
+            ANIMACIÓN</button>
+        </div>
+      </section>
+
+      <!-- SCREEN: SEASON SUMMARY -->
+      <section id="screen-season-summary" class="screen">
+        <div id="summary-capture-area" style="padding: 15px 15px 5px 15px; background: var(--bg-primary); border: 2px dashed var(--border-color); border-radius: 4px; box-shadow: 0 0 15px rgba(0,0,0,0.5);">
+          <div class="section-title-bar card-retro">
+            <div class="title-left">
+              <h2>🏆 <span data-i18n="summary_title_text">RESUMEN DE TEMPORADA</span></h2>
+              <p class="text-accent" data-i18n="summary_subtitle">Tu trayectoria en el Mundial</p>
+            </div>
+          </div>
+          <div class="season-summary-grid">
+            <div class="card-retro summary-driver-card" id="summary-d1-card">
+              <!-- Dynamic: Driver 1 stats -->
+            </div>
+            <div class="card-retro summary-driver-card" id="summary-d2-card">
+              <!-- Dynamic: Driver 2 stats -->
+            </div>
+          </div>
+          <div class="card-retro mt-10" id="summary-constructor-card">
+            <!-- Dynamic: Constructor stats -->
+          </div>
+        </div>
+        <div class="season-summary-actions mt-10 text-center">
+          <button id="btn-share-x" class="btn-retro btn-large" data-i18n="summary_share">📱 COMPARTIR EN X</button>
+          <button id="btn-restart-from-summary" class="btn-retro btn-large mt-10" data-i18n="standings_restart">EMPEZAR
+            NUEVO MUNDIAL</button>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: RACE SIMULATION -->
+      <section id="screen-race" class="screen">
+        <!-- Top race info bar -->
+        <div class="race-header card-retro">
+          <div class="race-info-main">
+            <h2><span data-i18n="race_gp_prefix">GP DE</span> <span id="race-circuit-name">CIRCUITO</span></h2>
+            <div class="race-laps-display"><span data-i18n="race_lap_label">VUELTA</span> <span id="race-curr-lap"
+                class="text-highlight">1</span> / <span id="race-total-laps">20</span></div>
+          </div>
+          <!-- Global progress bar of the race -->
+          <div class="race-progress-container">
+            <div id="race-global-progress" class="race-progress-bar" style="width: 5%;"></div>
+          </div>
+          <div class="race-weather-display"
+            style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 14px; border-top: 1px dashed var(--border-color); padding-top: 8px; font-family: var(--font-normal);">
+            <span><span data-i18n="race_weather">CLIMA:</span> <strong id="race-weather-status"
+                class="text-highlight">SOLEADO</strong></span>
+            <span><span data-i18n="race_track">PISTA:</span> <strong id="race-track-wetness" class="text-cyan">SECA
+                (0%)</strong></span>
+          </div>
+        </div>
+
+        <!-- Interactive strategy panel for user drivers -->
+        <div class="user-drivers-panel">
+
+          <!-- Driver 1 -->
+          <div class="card-retro driver-control-card" id="ctrl-driver1">
+            <div class="driver-header-summary">
+              <h3 id="r-d1-name">Piloto 1</h3>
+              <span id="r-d1-pos" class="driver-pos-badge">P1</span>
+            </div>
+            <div class="driver-telemetry-metrics">
+              <div class="metric">
+                <span class="label" data-i18n="th_tyres">NEUMÁTICOS</span>
+                <span id="r-d1-tyre-label" class="value text-green">MEDIO</span>
+              </div>
+              <div class="metric-progress-wrapper">
+                <div class="progress-bar-bg">
+                  <div id="r-d1-tyre-bar" class="progress-bar-fill bg-green" style="width: 100%;"></div>
+                </div>
+                <span id="r-d1-tyre-pct" class="progress-pct">100%</span>
+              </div>
+              <div class="metric">
+                <span class="label" data-i18n="race_gap_label">TIEMPO / BRECHA</span>
+                <span id="r-d1-gap" class="value text-cyan">LÍDER</span>
+              </div>
+            </div>
+
+            <!-- Strategy controls -->
+            <div class="driver-strategy-inputs">
+              <div class="strategy-row">
+                <label data-i18n="race_push">Ritmo:</label>
+                <div class="pace-selector btn-group-retro">
+                  <button class="btn-group-item active" data-pace="conserve"
+                    data-i18n="pace_conserve_short">CONS</button>
+                  <button class="btn-group-item" data-pace="balanced" data-i18n="pace_balanced_short">BAL</button>
+                  <button class="btn-group-item" data-pace="push" data-i18n="pace_push_short">EMP</button>
+                </div>
+              </div>
+              <div class="strategy-row">
+                <label data-i18n="race_pit_label">Parada:</label>
+                <div class="pit-selector-wrapper">
+                  <select id="r-d1-next-tyre" class="select-retro">
+                    <option value="Soft" data-i18n="opt_soft_desc">Blando (Seco / Rápido)</option>
+                    <option value="Medium" selected data-i18n="opt_medium_desc">Medio (Seco / Equilibrado)</option>
+                    <option value="Hard" data-i18n="opt_hard_desc">Duro (Seco / Duradero)</option>
+                    <option value="Intermediate" data-i18n="opt_inter_desc">Intermedios (Pista Húmeda)</option>
+                    <option value="Wet" data-i18n="opt_wet_desc">Lluvia (Pista Mojada)</option>
+                  </select>
+                  <button id="btn-d1-pit" class="btn-retro btn-small btn-pit-action" data-i18n="race_box">BOX ESTA
+                    VTA</button>
+                </div>
+              </div>
+            </div>
+            <div class="driver-status-text" id="r-d1-status" data-i18n="race_status_on_track">ESTADO: EN PISTA</div>
+          </div>
+
+          <!-- Driver 2 -->
+          <div class="card-retro driver-control-card" id="ctrl-driver2">
+            <div class="driver-header-summary">
+              <h3 id="r-d2-name">Piloto 2</h3>
+              <span id="r-d2-pos" class="driver-pos-badge">P2</span>
+            </div>
+            <div class="driver-telemetry-metrics">
+              <div class="metric">
+                <span class="label" data-i18n="th_tyres">NEUMÁTICOS</span>
+                <span id="r-d2-tyre-label" class="value text-green">MEDIO</span>
+              </div>
+              <div class="metric-progress-wrapper">
+                <div class="progress-bar-bg">
+                  <div id="r-d2-tyre-bar" class="progress-bar-fill bg-green" style="width: 100%;"></div>
+                </div>
+                <span id="r-d2-tyre-pct" class="progress-pct">100%</span>
+              </div>
+              <div class="metric">
+                <span class="label" data-i18n="race_gap_label">TIEMPO / BRECHA</span>
+                <span id="r-d2-gap" class="value text-cyan">+1.4s</span>
+              </div>
+            </div>
+
+            <!-- Strategy controls -->
+            <div class="driver-strategy-inputs">
+              <div class="strategy-row">
+                <label data-i18n="race_push">Ritmo:</label>
+                <div class="pace-selector btn-group-retro">
+                  <button class="btn-group-item active" data-pace="conserve"
+                    data-i18n="pace_conserve_short">CONS</button>
+                  <button class="btn-group-item" data-pace="balanced" data-i18n="pace_balanced_short">BAL</button>
+                  <button class="btn-group-item" data-pace="push" data-i18n="pace_push_short">EMP</button>
+                </div>
+              </div>
+              <div class="strategy-row">
+                <label data-i18n="race_pit_label">Parada:</label>
+                <div class="pit-selector-wrapper">
+                  <select id="r-d2-next-tyre" class="select-retro">
+                    <option value="Soft" data-i18n="opt_soft_desc">Blando (Seco / Rápido)</option>
+                    <option value="Medium" selected data-i18n="opt_medium_desc">Medio (Seco / Equilibrado)</option>
+                    <option value="Hard" data-i18n="opt_hard_desc">Duro (Seco / Duradero)</option>
+                    <option value="Intermediate" data-i18n="opt_inter_desc">Intermedios (Pista Húmeda)</option>
+                    <option value="Wet" data-i18n="opt_wet_desc">Lluvia (Pista Mojada)</option>
+                  </select>
+                  <button id="btn-d2-pit" class="btn-retro btn-small btn-pit-action" data-i18n="race_box">BOX ESTA
+                    VTA</button>
+                </div>
+              </div>
+            </div>
+            <div class="driver-status-text" id="r-d2-status" data-i18n="race_status_on_track">ESTADO: EN PISTA</div>
+          </div>
+        </div>
+
+        <!-- Telemetry Leaderboard and Live Feed -->
+        <div class="race-live-section">
+          <!-- Leaderboard Table -->
+          <div class="card-retro race-leaderboard">
+            <h3 data-i18n="race_leaderboard_title">TELEMETRÍA EN VIVO (POSICIONES Y DIFERENCIAS)</h3>
+            <div class="table-wrapper">
+              <table class="table-retro table-mini">
+                <thead>
+                  <tr>
+                    <th style="width: 8%" data-i18n="th_pos">POS</th>
+                    <th style="width: 40%" data-i18n="th_driver">PILOTO</th>
+                    <th style="width: 12%" data-i18n="th_tyre_short">GOMA</th>
+                    <th style="width: 15%" data-i18n="th_health">SALUD</th>
+                    <th style="width: 15%" data-i18n="th_gap">DIFERENCIA</th>
+                    <th style="width: 10%" data-i18n="th_pitstops">BOX</th>
+                  </tr>
+                </thead>
+                <tbody id="race-leaderboard-body">
+                  <!-- Dynamic -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Commentary Feed -->
+          <div class="card-retro race-commentary">
+            <h3 data-i18n="race_commentary_title">COMENTARIOS DEL COMISARIO DE PISTA</h3>
+            <div id="race-feed-box" class="live-feed-box text-light">
+              <!-- Logs dynamic -->
+            </div>
+
+            <!-- Game Speed Panel -->
+            <div class="race-speed-controls" style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px;">
+                <span class="label" data-i18n="lbl_speed">VELOCIDAD:</span>
+                <div class="btn-group-retro" id="speed-controls">
+                  <button class="btn-group-item active" data-speed="1">1X</button>
+                  <button class="btn-group-item" data-speed="3">3X</button>
+                  <button class="btn-group-item" data-speed="10" data-i18n="speed_fast">RÁPIDO</button>
+                </div>
+              </div>
+              <button id="btn-skip-race" class="btn-retro btn-small w-full mt-10" data-i18n="race_skip">OMITIR ANIMACIÓN
+                DE CARRERA</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Race Over Action screen -->
+        <div id="race-finish-panel" class="race-finish-overlay hidden">
+          <div class="finish-dialog card-retro text-center">
+            <h2 class="text-accent pulse-text" data-i18n="race_finish_title">🏁 ¡BANDERA A CUADROS! 🏁</h2>
+            <p data-i18n="race_finish_desc">La carrera ha finalizado. Verifica los resultados y las puntuaciones
+              oficiales de la temporada.</p>
+            <button id="btn-show-race-results" class="btn-retro btn-large w-full mt-10" data-i18n="race_results_btn">VER
+              RESULTADOS DE CARRERA</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6: RESULTS & CHAMPIONSHIP STANDINGS -->
+      <section id="screen-standings" class="screen">
+        <div class="standings-layout">
+          <!-- Left: Race Results with points -->
+          <div class="card-retro race-results-card">
+            <h2 class="text-highlight" data-i18n="standings_title">RESULTADOS DEL GP</h2>
+            <div class="table-wrapper">
+              <table class="table-retro">
+                <thead>
+                  <tr>
+                    <th style="width: 10%" data-i18n="th_pos">POS</th>
+                    <th style="width: 50%" data-i18n="th_driver">PILOTO</th>
+                    <th style="width: 25%" data-i18n="th_time_status">TIEMPO/ESTADO</th>
+                    <th style="width: 15%" data-i18n="th_points">PUNTOS</th>
+                  </tr>
+                </thead>
+                <tbody id="race-results-body">
+                  <!-- Dynamic -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Right: Updated Championship Standings -->
+          <div class="card-retro championship-standings-card">
+            <h2 class="text-accent" data-i18n="standings_championship">CLASIFICACIÓN MUNDIAL</h2>
+            <div class="standings-tabs-results">
+              <button id="tab-results-drivers" class="tab-btn active" data-i18n="tab_drivers">PILOTOS</button>
+              <button id="tab-results-constructors" class="tab-btn" data-i18n="tab_constructors">CONSTRUCTORES</button>
+            </div>
+
+            <!-- Drivers standings -->
+            <div id="results-drivers-view" class="standings-table-container">
+              <table class="table-retro table-mini">
+                <thead>
+                  <tr>
+                    <th style="width: 10%" data-i18n="th_pos">POS</th>
+                    <th style="width: 50%" data-i18n="th_driver">PILOTO</th>
+                    <th style="width: 25%" data-i18n="th_era">ERA</th>
+                    <th style="width: 15%" data-i18n="th_points">PTS</th>
+                  </tr>
+                </thead>
+                <tbody id="results-drivers-body">
+                  <!-- Dynamic -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Constructors standings -->
+            <div id="results-constructors-view" class="standings-table-container hidden">
+              <table class="table-retro table-mini">
+                <thead>
+                  <tr>
+                    <th style="width: 10%" data-i18n="th_pos">POS</th>
+                    <th style="width: 60%" data-i18n="th_constructor">CONSTRUCTOR / COMPONENTES</th>
+                    <th style="width: 30%" data-i18n="th_points">PTS</th>
+                  </tr>
+                </thead>
+                <tbody id="results-constructors-body">
+                  <!-- Dynamic -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action bottom -->
+        <div class="standings-actions card-retro text-center mt-10">
+          <p id="championship-status-text" class="text-light" data-i18n="standings_gp_finished_status">Fin del GP.
+            Prepárate para el siguiente reto del calendario.</p>
+          <button id="btn-next-race" class="btn-retro btn-large mt-10" data-i18n="standings_next">AVANZAR AL SIGUIENTE
+            GP</button>
+          <button id="btn-sim-rest-championship" class="btn-retro btn-small mt-10" data-i18n="standings_sim_rest">⚡
+            SIMULAR RESTO DEL CAMPEONATO</button>
+          <button id="btn-restart-championship" class="btn-retro btn-large mt-10 hidden"
+            data-i18n="standings_restart">EMPEZAR NUEVO MUNDIAL</button>
+          <button id="btn-view-season-summary" class="btn-retro btn-large mt-10 hidden"
+            data-i18n="standings_view_summary">📊 VER RESUMEN DE TEMPORADA</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Main scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="app.js?v=4.0"></script>
+</body>
+
+</html>
