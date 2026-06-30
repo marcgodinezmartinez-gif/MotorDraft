@@ -13,7 +13,7 @@ const TRANSLATIONS = {
     menu_desc1: "Toma el control de tu propia escudería histórica. Selecciona chasis, motor, neumáticos y pilotos de cuatro décadas legendarias en nuestro draft inicial y compite en un mundial de 10 carreras.",
     menu_desc2: "Gestiona la degradación, decide cuándo parar en boxes y ordena a tus pilotos atacar o conservar. ¿Podrás conquistar el campeonato de constructores?",
     menu_start: "COMENZAR NUEVA TEMPORADA",
-    menu_footer: "v1.0.0 - HECHO EN ESPAÑA - CLIENT-SIDE ONLY",
+    menu_footer: "v1.0.0 - HECHO EN ESPAÑA",
     draft_round: "RONDA DRAFT",
     draft_category: "Categoría actual a elegir:",
     draft_team_status: "ESTADO DE TU ESCUDERÍA",
@@ -3322,7 +3322,7 @@ class App {
   shareOnTwitter() {
     const btn = document.getElementById('btn-share-x');
     const originalText = btn.innerHTML;
-    
+
     // Show loading state
     btn.innerHTML = this.lang === 'es' ? 'GENERANDO IMAGEN...' : 'GENERATING IMAGE...';
     btn.disabled = true;
@@ -3362,8 +3362,8 @@ class App {
               'image/png': blob
             })
           ]).then(() => {
-            alert(this.lang === 'es' 
-              ? "📸 ¡Imagen de tu resumen copiada al portapapeles!\n\nSe abrirá la ventana de X. Pulsa Pegar (Ctrl+V) directamente en el tweet para adjuntar tu imagen." 
+            alert(this.lang === 'es'
+              ? "📸 ¡Imagen de tu resumen copiada al portapapeles!\n\nSe abrirá la ventana de X. Pulsa Pegar (Ctrl+V) directamente en el tweet para adjuntar tu imagen."
               : "📸 Summary image copied to clipboard!\n\nX window will open. Press Paste (Ctrl+V) directly in the tweet box to attach the image.");
             copyAndShare();
           }).catch(err => {
