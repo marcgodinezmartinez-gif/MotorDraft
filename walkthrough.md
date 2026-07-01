@@ -55,8 +55,22 @@ Sigue estos pasos para verificar el funcionamiento en tu navegador:
    - Observa las radios de los pilotos en el feed de comentarios: comprueba que cuando hablan tus pilotos, sus diálogos se muestren en el idioma seleccionado.
    - Deja que termine y pulsa **VER RESULTADOS** para comprobar que la transición se realiza sin errores a la tabla del campeonato.
 6. **Probar Simular Resto del Campeonato**:
-   - En la tabla de resultados, haz clic en **⚡ SIMULAR RESTO DEL CAMPEONATO**.
+   - En la tabla de resultados, haz clic en **⚡ SIMULAR EL RESTO DEL CAMPEONATO**.
    - El simulador simulará de corrido todos los GPs que queden.
    - Al terminar, haz clic en **VER RESUMEN DE TEMPORADA** / **VIEW SEASON SUMMARY**.
 7. **Verificar Estadísticas y Compartir en X**:
    - Comprueba las estadísticas de tus pilotos en el resumen en español o inglés y haz clic en **COMPARTIR EN X**. Debe abrirse una ventana emergente de X/Twitter con el texto formateado en tu idioma preferido listo para publicar.
+
+---
+
+## 📱 Corrección de Layout en Dispositivos Móviles (Nueva Optimización)
+
+Se ha solucionado el problema donde los botones quedaban demasiado bajos y se solapaban con la interfaz/barra de navegación del navegador móvil.
+
+### Cambios realizados en [styles.css](file:///c:/Users/marcg/OneDrive/Documentos/Projects/MotorDraft/styles.css):
+1. **Dynamic Viewport Height (`100dvh`)**: Se implementó `height: 100dvh` en `html, body` para asegurar que el contenedor del juego se ajuste exactamente al área visible del navegador, evitando que los elementos sean empujados bajo la barra de direcciones dinámica de Chrome/Safari en móviles.
+2. **Safe Area Insets**: En la media query para móviles (`max-width: 576px`), el `body` ahora calcula su padding inferior considerando la zona segura del dispositivo: `padding: 5px 5px calc(20px + env(safe-area-inset-bottom, 0px)) 5px;`. Esto añade margen inferior automático en móviles con "notch" o barra de gestos inferior.
+3. **Optimización de comentarios de carrera**: Se redujo la altura de la caja de comentarios `.live-feed-box` en la pantalla de carrera a `150px` (y en general a `180px` en móvil) para evitar scroll innecesario y asegurar que los controles de velocidad y el botón de omitir queden cómodamente visibles dentro del viewport.
+4. **Apilado de botones de acción**:
+   - En la planificación de estrategia previa a la carrera (`.pre-race-actions`), los botones "CONFIRMAR ESTRATEGIA Y COMENZAR GP" y "SIMULAR GP" se apilan verticalmente y ocupan el 100% del ancho disponible para evitar que se aplasten horizontalmente en pantallas estrechas.
+   - Lo mismo se aplica a los botones del resumen final de temporada (`.season-summary-actions`), facilitando su pulsación cómoda.

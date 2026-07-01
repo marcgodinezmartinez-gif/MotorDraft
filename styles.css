@@ -29,6 +29,7 @@
 
 html, body {
   height: 100vh;
+  height: 100dvh;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -1426,7 +1427,7 @@ body {
    ============================================================================ */
 @media (max-width: 576px) {
   body {
-    padding: 5px;
+    padding: 5px 5px calc(20px + env(safe-area-inset-bottom, 0px)) 5px;
   }
   
   .game-header {
@@ -1481,7 +1482,32 @@ body {
   /* Live commentary feed font size */
   .live-feed-box {
     font-size: 13px;
-    height: 220px;
+    height: 180px;
+  }
+
+  .race-commentary .live-feed-box {
+    height: 150px;
+  }
+
+  .pre-race-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  
+  .pre-race-actions button {
+    width: 100% !important;
+  }
+
+  .season-summary-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .season-summary-actions button {
+    width: 100% !important;
+    margin-top: 0 !important;
   }
 
   .driver-status-text {
