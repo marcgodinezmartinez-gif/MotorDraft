@@ -69,8 +69,18 @@ Se ha solucionado el problema donde los botones quedaban demasiado bajos y se so
 
 ### Cambios realizados en [styles.css](file:///c:/Users/marcg/OneDrive/Documentos/Projects/MotorDraft/styles.css):
 1. **Dynamic Viewport Height (`100dvh`)**: Se implementó `height: 100dvh` en `html, body` para asegurar que el contenedor del juego se ajuste exactamente al área visible del navegador, evitando que los elementos sean empujados bajo la barra de direcciones dinámica de Chrome/Safari en móviles.
-2. **Safe Area Insets**: En la media query para móviles (`max-width: 576px`), el `body` ahora calcula su padding inferior considerando la zona segura del dispositivo: `padding: 5px 5px calc(20px + env(safe-area-inset-bottom, 0px)) 5px;`. Esto añade margen inferior automático en móviles con "notch" o barra de gestos inferior.
+2. **Safe Area Insets**: En la media query para móviles (`max-width: 576px`), el `body` ahora calcula su padding inferior considerando la zona segura del dispositivo: `padding: 5px 5px calc(15px + env(safe-area-inset-bottom, 0px)) 5px;`. Esto añade margen inferior automático en móviles con "notch" o barra de gestos inferior.
 3. **Optimización de comentarios de carrera**: Se redujo la altura de la caja de comentarios `.live-feed-box` en la pantalla de carrera a `150px` (y en general a `180px` en móvil) para evitar scroll innecesario y asegurar que los controles de velocidad y el botón de omitir queden cómodamente visibles dentro del viewport.
 4. **Apilado de botones de acción**:
    - En la planificación de estrategia previa a la carrera (`.pre-race-actions`), los botones "CONFIRMAR ESTRATEGIA Y COMENZAR GP" y "SIMULAR GP" se apilan verticalmente y ocupan el 100% del ancho disponible para evitar que se aplasten horizontalmente en pantallas estrechas.
    - Lo mismo se aplica a los botones del resumen final de temporada (`.season-summary-actions`), facilitando su pulsación cómoda.
+5. **Reducción de Cajas y Espaciados (Compactación Mobile)**:
+   - **Tarjetas (`.card-retro`)**: Se redujo el relleno (`padding`) a `10px`, el margen inferior a `8px` y el grosor del borde a `2px`.
+   - **Títulos**: Los títulos `h2` y `h3` dentro de tarjetas son más pequeños (`11px`) y tienen menos margen.
+   - **Grillas**: Los huecos (`gap`) de todas las distribuciones de rejilla (Dashboard, Clasificación, Carrera, Pre-carrera, Resultados) se redujeron a `8px`.
+   - **Tablas**: El tamaño de fuente de celdas y cabeceras disminuyó a `11px` con relleno de `4px` para evitar desbordamiento horizontal.
+   - **Draft Slots**: Se redujo la altura mínima a `48px` y los textos se hicieron más compactos, reduciendo considerablemente la altura de la pantalla de draft.
+   - **Menu Principal**: Se limitó el ancho del logotipo a `220px` y el texto explicativo a `13px` para prevenir que la pantalla inicial desborde verticalmente.
+   - **Panel de Control de Pilotos**: Se compactaron los elementos internos de telemetría, ritmo y boxes, reduciendo significativamente la altura acumulada de ambas tarjetas de piloto en carrera.
+   - **Botones de pestañas (`.tab-btn`)**: Tamaño de fuente a `9px` y padding a `6px 8px`.
+

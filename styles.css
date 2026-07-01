@@ -1427,24 +1427,46 @@ body {
    ============================================================================ */
 @media (max-width: 576px) {
   body {
-    padding: 5px 5px calc(20px + env(safe-area-inset-bottom, 0px)) 5px;
+    padding: 5px 5px calc(15px + env(safe-area-inset-bottom, 0px)) 5px;
   }
   
   .game-header {
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
     align-items: center;
     text-align: center;
-    padding: 10px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border-width: 2px;
   }
   
   .header-logo h1 {
-    font-size: 20px;
+    font-size: 18px;
+  }
+  
+  .header-tagline {
+    font-size: 9px;
   }
 
   .header-audio-control {
     width: 100%;
     justify-content: center;
+  }
+
+  .card-retro {
+    padding: 10px;
+    margin-bottom: 8px;
+    border-width: 2px;
+  }
+
+  .card-retro h2, .card-retro h3 {
+    font-size: 11px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+  }
+
+  .btn-retro {
+    border-width: 2px;
   }
 
   .btn-large {
@@ -1457,10 +1479,19 @@ body {
     padding: 4px 8px;
   }
 
+  .tab-btn {
+    font-size: 9px;
+    padding: 6px 8px;
+  }
+
   /* Reduce font sizes inside tables to prevent overflow */
   .table-retro td, .table-retro th {
-    font-size: 12px;
-    padding: 5px;
+    font-size: 11px;
+    padding: 4px;
+  }
+
+  .dashboard-grid, .quali-grid, .race-live-section, .standings-layout, .pre-race-grid, .season-summary-grid, .story-standings-grid {
+    gap: 8px;
   }
 
   /* Make draft slots grid 2 columns on very small devices */
@@ -1468,10 +1499,62 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .draft-slot {
+    min-height: 48px;
+    padding: 4px;
+  }
+
+  .slot-label {
+    font-size: 8px;
+    margin-bottom: 2px;
+  }
+
+  .slot-value {
+    font-size: 10px;
+  }
+
+  /* Menu screen optimizations */
+  .menu-logo-img {
+    max-width: 220px;
+    margin-bottom: 5px;
+  }
+
+  .menu-intro p {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .menu-actions {
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+
+  /* Circuit details */
+  .circuit-banner {
+    padding: 6px;
+    margin-bottom: 8px;
+  }
+
+  .circuit-banner h3 {
+    font-size: 14px;
+  }
+
+  .circuit-stats-grid {
+    margin-bottom: 8px;
+  }
+
   /* Optimal range bar slider adjustments */
   .slider-retro::-webkit-slider-thumb {
     width: 16px;
     height: 16px;
+  }
+
+  .slider-container {
+    height: 24px;
+  }
+
+  .slider-optimal-range {
+    top: 8px;
   }
 
   /* Pre-race instructions padding */
@@ -1508,6 +1591,31 @@ body {
   .season-summary-actions button {
     width: 100% !important;
     margin-top: 0 !important;
+  }
+
+  /* Driver controls in Race Screen */
+  .driver-header-summary {
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+  }
+
+  .driver-telemetry-metrics {
+    margin-bottom: 8px;
+    gap: 4px;
+  }
+
+  .driver-strategy-inputs {
+    padding: 6px;
+    margin-bottom: 6px;
+    gap: 6px;
+  }
+
+  .strategy-row {
+    gap: 4px;
+  }
+
+  .strategy-row label {
+    font-size: 9px;
   }
 
   .driver-status-text {
