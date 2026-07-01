@@ -3464,4 +3464,57 @@ class App {
 window.addEventListener('DOMContentLoaded', () => {
   // Start Application
   window.app = new App();
+
+  // =========================================================================
+  // AUTO-SCALE: Fit game-container to viewport height on desktop
+  // =========================================================================
+  const gameContainer = document.querySelector('.game-container');
+
+  function autoScaleToViewport() {
+    // Only apply on desktop (width > 768px)
+    if (window.innerWidth <= 768) {
+      gameContainer.style.zoom = '';
+      return;
+    }
+
+    // Temporarily reset zoom to measure natural height
+    gameContainer.style.zoom = '1';
+    const naturalHeight = gameContainer.scrollHeight;
+    const availableHeight = window.innerHeight - 20; // 20px = body padding (10 top + 10 bottom)
+
+    if (naturalHeight > availableHeight) {
+      const scale = availableHeight / naturalHeight;
+      // Clamp between 0.5 and 1 to avoid extreme shrinking
+      const clampedScale = Math.max(0.5, Math.min(1, scale));
+      gameContainer.style.zoom = clampedScale;
+    } else {
+      gameContainer.style.zoom = '1';
+    }
+  }
+
+  // Run on load
+  autoScaleToViewport();
+
+  // Run on window resize (debounced)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(autoScaleToViewport, 150);
+  });
+
+  // Run whenever screens change — observe class mutations on screens
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.attributeName === 'class') {
+        setTimeout(autoScaleToViewport, 50);
+        break;
+      }
+    }
+  });
+  document.querySelectorAll('.screen').forEach(screen => {
+    observer.observe(screen, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  // Expose for manual recalc if needed
+  window.autoScaleToViewport = autoScaleToViewport;
 });

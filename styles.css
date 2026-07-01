@@ -1837,13 +1837,12 @@ body {
    DESKTOP SPECIFIC OPTIMIZATIONS (width > 768px)
    ============================================================================ */
 @media (min-width: 769px) {
-  /* Kill page-level scrollbar on desktop — only internal panels scroll */
+  /* On desktop, screens don't need the scrollbar padding */
   .screen {
-    overflow-y: hidden;
     padding-right: 0;
   }
 
-  /* Prevent vertical scrolling on desktop by restricting table/feed heights */
+  /* Restrict table/feed heights so internal panels scroll, not the page */
   #screen-dashboard .standings-table-container {
     max-height: 200px;
   }
