@@ -3466,34 +3466,46 @@ window.addEventListener('DOMContentLoaded', () => {
   window.app = new App();
 
   // =========================================================================
-  // AUTO-SCALE: Fit game-container to viewport height on desktop
+  // AUTO-SCALE: Fit game-container to viewport height on desktop.
+  // Desktop CSS removes height/overflow constraints so scrollHeight reflects
+  // the true content height. We then apply CSS zoom to shrink it to fit.
   // =========================================================================
   const gameContainer = document.querySelector('.game-container');
+  let currentZoom = 1;
 
   function autoScaleToViewport() {
     // Only apply on desktop (width > 768px)
     if (window.innerWidth <= 768) {
       gameContainer.style.zoom = '';
+      document.body.style.overflow = '';
+      currentZoom = 1;
       return;
     }
 
-    // Temporarily reset zoom to measure natural height
+    // Reset zoom to 1 so we can measure the natural (unscaled) height
     gameContainer.style.zoom = '1';
+
+    // Force a layout reflow so scrollHeight is recalculated
+    void gameContainer.offsetHeight;
+
     const naturalHeight = gameContainer.scrollHeight;
-    const availableHeight = window.innerHeight - 20; // 20px = body padding (10 top + 10 bottom)
+    const availableHeight = window.innerHeight;
 
     if (naturalHeight > availableHeight) {
       const scale = availableHeight / naturalHeight;
-      // Clamp between 0.5 and 1 to avoid extreme shrinking
-      const clampedScale = Math.max(0.5, Math.min(1, scale));
-      gameContainer.style.zoom = clampedScale;
+      // Clamp: never go below 50% zoom
+      currentZoom = Math.max(0.5, Math.min(1, scale));
     } else {
-      gameContainer.style.zoom = '1';
+      currentZoom = 1;
     }
+
+    gameContainer.style.zoom = String(currentZoom);
+    // Hide any sub-pixel overflow caused by rounding
+    document.body.style.overflow = 'hidden';
   }
 
-  // Run on load
-  autoScaleToViewport();
+  // Run on load (small delay to let fonts/images settle)
+  setTimeout(autoScaleToViewport, 100);
 
   // Run on window resize (debounced)
   let resizeTimer;
@@ -3502,11 +3514,12 @@ window.addEventListener('DOMContentLoaded', () => {
     resizeTimer = setTimeout(autoScaleToViewport, 150);
   });
 
-  // Run whenever screens change — observe class mutations on screens
+  // Run whenever a screen becomes active (class change)
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
-      if (mutation.attributeName === 'class') {
-        setTimeout(autoScaleToViewport, 50);
+      if (mutation.attributeName === 'class' &&
+          mutation.target.classList.contains('active')) {
+        setTimeout(autoScaleToViewport, 80);
         break;
       }
     }
@@ -3515,6 +3528,6 @@ window.addEventListener('DOMContentLoaded', () => {
     observer.observe(screen, { attributes: true, attributeFilter: ['class'] });
   });
 
-  // Expose for manual recalc if needed
+  // Expose globally for manual recalc
   window.autoScaleToViewport = autoScaleToViewport;
 });

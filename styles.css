@@ -1835,42 +1835,57 @@ body {
 
 /* ============================================================================
    DESKTOP SPECIFIC OPTIMIZATIONS (width > 768px)
+   Removes height constraints so content flows naturally.
+   JS auto-scale (zoom) will shrink everything to fit the viewport.
    ============================================================================ */
 @media (min-width: 769px) {
-  /* On desktop, screens don't need the scrollbar padding */
+  html, body {
+    height: auto;
+    overflow: hidden;
+  }
+
+  .game-container {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .game-screens {
+    height: auto;
+    overflow: visible;
+    flex: none;
+  }
+
   .screen {
+    height: auto;
+    overflow: visible;
+    flex: none;
     padding-right: 0;
   }
 
-  /* Restrict table/feed heights so internal panels scroll, not the page */
-  #screen-dashboard .standings-table-container {
-    max-height: 200px;
-  }
-
-  #screen-quali .table-wrapper {
+  /* Internal panels still scroll within their capped heights */
+  .standings-table-container {
     max-height: 220px;
+    overflow-y: auto;
   }
 
-  #screen-quali .live-feed-box {
-    height: 180px;
+  .table-wrapper {
+    max-height: 240px;
+    overflow-y: auto;
   }
 
-  #screen-race .table-wrapper {
-    max-height: 200px;
+  .live-feed-box {
+    max-height: 180px;
+    overflow-y: auto;
   }
 
-  #screen-race .live-feed-box {
-    height: 160px;
-  }
-
-  #screen-standings .table-wrapper,
-  #screen-standings .standings-table-container {
-    max-height: 250px;
+  .story-ticker-card {
+    max-height: 350px;
+    overflow-y: auto;
   }
 
   .story-mini-standings {
-    max-height: 320px;
+    max-height: 280px;
     overflow-y: auto;
-    padding-right: 5px;
   }
 }
