@@ -120,7 +120,7 @@ const TRANSLATIONS = {
     menu_desc1: "Take control of your own historic racing team. Select chassis, engine, tyres, and drivers from four legendary decades in our initial draft and compete in a 10-race world championship.",
     menu_desc2: "Manage degradation, decide when to pit, and order your drivers to push or conserve. Can you conquer the constructors' championship?",
     menu_start: "START NEW SEASON",
-    menu_footer: "v1.0.0 - MADE IN SPAIN - CLIENT-SIDE ONLY",
+    menu_footer: "v1.0.0 - MADE IN SPAIN",
     draft_round: "DRAFT ROUND",
     draft_category: "Current category to select:",
     draft_team_status: "YOUR TEAM STATUS",
@@ -2997,7 +2997,7 @@ class App {
   async simulateFullChampionshipStoryMode() {
     this.switchScreen('story');
     this.storySkipRequested = false;
-    
+
     // Focus/Scroll to ticker card
     const tickerCard = document.querySelector('.story-ticker-card');
     if (tickerCard) {
@@ -3118,7 +3118,7 @@ class App {
 
     this.switchScreen('story');
     this.storySkipRequested = false;
-    
+
     // Focus/Scroll to ticker card
     const tickerCard = document.querySelector('.story-ticker-card');
     if (tickerCard) {
