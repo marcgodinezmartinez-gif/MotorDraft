@@ -1202,17 +1202,32 @@ body {
 .slider-container {
   position: relative;
   width: 100%;
-  height: 32px;
-  margin-top: 4px;
+  height: 24px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.slider-container::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px; /* Centered track: (24px - 8px) / 2 */
+  height: 8px;
+  background: #09090b;
+  border: 2px solid var(--border-color);
+  border-radius: 2px;
+  z-index: 0;
 }
 
 .slider-optimal-range {
   position: absolute;
-  top: 12px;
+  top: 8px;
   height: 8px;
-  background: rgba(0, 255, 136, 0.25);
-  border: 1px solid var(--neon-green);
-  border-radius: 4px;
+  background: rgba(57, 255, 20, 0.35); /* Visible semi-transparent green */
+  border-top: 2px solid var(--neon-green);
+  border-bottom: 2px solid var(--neon-green);
+  border-radius: 1px;
   pointer-events: none;
   z-index: 1;
 }
@@ -1221,35 +1236,53 @@ body {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 8px;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
+  height: 24px;
+  background: transparent;
   outline: none;
   position: relative;
   z-index: 2;
   cursor: pointer;
+  margin: 0;
+  display: block;
+}
+
+.slider-retro::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 24px;
+  background: transparent;
+  border: none;
+}
+
+.slider-retro::-moz-range-track {
+  width: 100%;
+  height: 24px;
+  background: transparent;
+  border: none;
 }
 
 .slider-retro::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  height: 20px;
+  width: 12px;
   background: var(--neon-cyan);
   border: 2px solid var(--text-primary);
-  border-radius: 2px;
+  border-radius: 1px;
   cursor: pointer;
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+  margin-top: 2px; /* (24px - 20px) / 2 */
+  box-shadow: 0 0 6px var(--neon-cyan);
+  image-rendering: pixelated;
 }
 
 .slider-retro::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  height: 20px;
+  width: 12px;
   background: var(--neon-cyan);
   border: 2px solid var(--text-primary);
-  border-radius: 2px;
+  border-radius: 1px;
   cursor: pointer;
+  box-shadow: 0 0 6px var(--neon-cyan);
+  image-rendering: pixelated;
 }
 
 .slider-labels {
@@ -1543,18 +1576,16 @@ body {
     margin-bottom: 8px;
   }
 
-  /* Optimal range bar slider adjustments */
+  /* Optimal range bar slider adjustments for mobile */
   .slider-retro::-webkit-slider-thumb {
-    width: 16px;
-    height: 16px;
+    width: 10px;
+    height: 18px;
+    margin-top: 3px; /* (24px - 18px) / 2 */
   }
 
-  .slider-container {
-    height: 24px;
-  }
-
-  .slider-optimal-range {
-    top: 8px;
+  .slider-retro::-moz-range-thumb {
+    width: 10px;
+    height: 18px;
   }
 
   /* Pre-race instructions padding */

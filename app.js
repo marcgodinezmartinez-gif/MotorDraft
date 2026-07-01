@@ -2997,9 +2997,24 @@ class App {
   async simulateFullChampionshipStoryMode() {
     this.switchScreen('story');
     this.storySkipRequested = false;
-    document.getElementById('btn-story-skip').classList.add('hidden'); // Hide skip button as it is instant now
-    document.getElementById('story-title').innerText = 'SIMULACIÓN DEL CAMPEONATO';
-    document.getElementById('story-subtitle').innerText = 'Campeonato en curso...';
+    
+    // Focus/Scroll to ticker card
+    const tickerCard = document.querySelector('.story-ticker-card');
+    if (tickerCard) {
+      tickerCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    const btnSkip = document.getElementById('btn-story-skip');
+    btnSkip.innerText = this.lang === 'es' ? 'SALTAR ANIMACIÓN' : 'SKIP ANIMATION';
+    btnSkip.classList.remove('hidden');
+    btnSkip.onclick = () => {
+      synth.playSelect();
+      this.storySkipRequested = true;
+      btnSkip.classList.add('hidden');
+    };
+
+    document.getElementById('story-title').innerText = this.lang === 'es' ? 'SIMULACIÓN DEL CAMPEONATO' : 'CHAMPIONSHIP SIMULATION';
+    document.getElementById('story-subtitle').innerText = this.lang === 'es' ? 'Campeonato en curso...' : 'Championship in progress...';
 
     const feed = document.getElementById('story-ticker-feed');
     feed.innerHTML = '';
@@ -3010,18 +3025,22 @@ class App {
     const totalGPs = this.championship.seasonCircuits.length;
     const startIdx = this.championship.currentRaceIndex;
 
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
     for (let gpIdx = startIdx; gpIdx < totalGPs; gpIdx++) {
       this.championship.currentRaceIndex = gpIdx;
       const circuit = this.championship.getCurrentCircuit();
 
       // Ticker: GP header
       this.addTickerLine(`🏁 GP ${gpIdx + 1}/${totalGPs} — ${circuit.name.toUpperCase()}`, 'gp-header');
+      if (!this.storySkipRequested) await sleep(400);
 
       // Simulate Quali
       this.simulateQualiInstant();
       const qualiP1 = this.simulator.qualiStandings.findIndex(q => q.driver.baseId === this.userTeam.Driver1.baseId) + 1;
       const qualiP2 = this.simulator.qualiStandings.findIndex(q => q.driver.baseId === this.userTeam.Driver2.baseId) + 1;
-      this.addTickerLine(`⏱️ Clasificación: ${this.userTeam.Driver1.name} P${qualiP1}, ${this.userTeam.Driver2.name} P${qualiP2}`);
+      this.addTickerLine(`⏱️ ${this.lang === 'es' ? 'Clasificación' : 'Qualifying'}: ${this.userTeam.Driver1.name} P${qualiP1}, ${this.userTeam.Driver2.name} P${qualiP2}`);
+      if (!this.storySkipRequested) await sleep(400);
 
       // Simulate Race
       const strat = this.generateAutoStrategy();
@@ -3036,40 +3055,49 @@ class App {
       const winner = this.simulator.participants.find(p => p.status === 'active');
       if (winner) {
         const isUserWin = winner.isUserDriver;
-        this.addTickerLine(`🏆 Ganador: ${winner.driver.name}`, isUserWin ? 'highlight' : '');
+        this.addTickerLine(`🏆 ${this.lang === 'es' ? 'Ganador' : 'Winner'}: ${winner.driver.name}`, isUserWin ? 'highlight' : '');
       }
+      if (!this.storySkipRequested) await sleep(400);
 
       // User drivers
       [this.userTeam.Driver1, this.userTeam.Driver2].forEach(ud => {
         const p = this.simulator.participants.find(pp => pp.driver.baseId === ud.baseId);
         if (!p) return;
         const pos = this.simulator.participants.indexOf(p) + 1;
-        if (p.status === 'dsq') this.addTickerLine(`❌ ${ud.name}: DESCALIFICADO`, 'warning');
-        else if (p.status === 'dnf') this.addTickerLine(`⚠️ ${ud.name}: RETIRADO`, 'warning');
-        else if (pos <= 3) this.addTickerLine(`🎉 ${ud.name}: P${pos} ¡PODIO!`, 'highlight');
+        if (p.status === 'dsq') this.addTickerLine(`❌ ${ud.name}: ${this.lang === 'es' ? 'DESCALIFICADO' : 'DISQUALIFIED'}`, 'warning');
+        else if (p.status === 'dnf') this.addTickerLine(`⚠️ ${ud.name}: ${this.lang === 'es' ? 'RETIRADO' : 'RETIRED'}`, 'warning');
+        else if (pos <= 3) this.addTickerLine(`🎉 ${ud.name}: P${pos} ${this.lang === 'es' ? '¡PODIO!' : 'PODIUM!'}`, 'highlight');
         else this.addTickerLine(`📊 ${ud.name}: P${pos}`);
       });
+      if (!this.storySkipRequested) await sleep(400);
 
       // DNFs summary
       const dnfs = this.simulator.participants.filter(p => p.status === 'dnf');
-      if (dnfs.length > 0) this.addTickerLine(`💥 Abandonos: ${dnfs.map(d => d.driver.name).join(', ')}`);
+      if (dnfs.length > 0) {
+        this.addTickerLine(`💥 ${this.lang === 'es' ? 'Abandonos' : 'Retirements'}: ${dnfs.map(d => d.driver.name).join(', ')}`);
+      }
+      if (!this.storySkipRequested) await sleep(400);
 
       // Update standings display
       this.renderStoryStandings();
+
+      // Pause a bit longer between GPs
+      this.addTickerLine(` `, '');
+      if (!this.storySkipRequested) await sleep(800);
     }
 
     // Championship complete
     const dc = this.championship.driversStandings[0];
     const cc = this.championship.constructorsStandings[0];
     this.addTickerLine(``, '');
-    this.addTickerLine(`🏆🏆🏆 ¡CAMPEONATO FINALIZADO! 🏆🏆🏆`, 'gp-header');
-    this.addTickerLine(`👑 Campeón de Pilotos: ${dc.name} (${dc.points} pts)`, 'highlight');
-    this.addTickerLine(`🔧 Campeón de Constructores: ${cc.teamName} (${cc.points} pts)`, 'highlight');
+    this.addTickerLine(`🏆🏆🏆 ${this.lang === 'es' ? '¡CAMPEONATO FINALIZADO!' : 'CHAMPIONSHIP COMPLETED!'} 🏆🏆🏆`, 'gp-header');
+    this.addTickerLine(`👑 ${this.lang === 'es' ? 'Campeón de Pilotos' : 'Drivers Champion'}: ${dc.name} (${dc.points} pts)`, 'highlight');
+    this.addTickerLine(`🔧 ${this.lang === 'es' ? 'Campeón de Constructores' : 'Constructors Champion'}: ${cc.teamName} (${cc.points} pts)`, 'highlight');
 
-    document.getElementById('story-subtitle').innerText = '¡Temporada finalizada!';
-    document.getElementById('btn-story-skip').innerText = 'VER RESUMEN DE TEMPORADA';
-    document.getElementById('btn-story-skip').classList.remove('hidden');
-    document.getElementById('btn-story-skip').onclick = () => {
+    document.getElementById('story-subtitle').innerText = this.lang === 'es' ? '¡Temporada finalizada!' : 'Season completed!';
+    btnSkip.innerText = this.lang === 'es' ? 'VER RESUMEN DE TEMPORADA' : 'VIEW SEASON SUMMARY';
+    btnSkip.classList.remove('hidden');
+    btnSkip.onclick = () => {
       this.renderSeasonSummary();
       this.switchScreen('seasonSummary');
     };
@@ -3090,16 +3118,33 @@ class App {
 
     this.switchScreen('story');
     this.storySkipRequested = false;
-    document.getElementById('btn-story-skip').classList.add('hidden');
+    
+    // Focus/Scroll to ticker card
+    const tickerCard = document.querySelector('.story-ticker-card');
+    if (tickerCard) {
+      tickerCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    const btnSkip = document.getElementById('btn-story-skip');
+    btnSkip.innerText = this.lang === 'es' ? 'SALTAR ANIMACIÓN' : 'SKIP ANIMATION';
+    btnSkip.classList.remove('hidden');
+    btnSkip.onclick = () => {
+      synth.playSelect();
+      this.storySkipRequested = true;
+      btnSkip.classList.add('hidden');
+    };
 
     const circuit = this.championship.getCurrentCircuit();
     const feed = document.getElementById('story-ticker-feed');
     feed.innerHTML = '';
 
     document.getElementById('story-title').innerText = `GP DE ${circuit.name.toUpperCase()}`;
-    document.getElementById('story-subtitle').innerText = 'Simulando GP...';
+    document.getElementById('story-subtitle').innerText = this.lang === 'es' ? 'Simulando GP...' : 'Simulating GP...';
+
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     this.addTickerLine(`🏁 GP DE ${circuit.name.toUpperCase()}`, 'gp-header');
+    if (!this.storySkipRequested) await sleep(400);
 
     // Race simulation
     this.simulator.initRace(this.simulator.qualiStandings, strat);
@@ -3118,22 +3163,32 @@ class App {
 
     // Narrate results
     const winner = this.simulator.participants.find(p => p.status === 'active');
-    if (winner) this.addTickerLine(`🏆 Ganador: ${winner.driver.name}`, winner.isUserDriver ? 'highlight' : '');
+    if (winner) {
+      this.addTickerLine(`🏆 ${this.lang === 'es' ? 'Ganador' : 'Winner'}: ${winner.driver.name}`, winner.isUserDriver ? 'highlight' : '');
+    }
+    if (!this.storySkipRequested) await sleep(400);
 
     [this.userTeam.Driver1, this.userTeam.Driver2].forEach(ud => {
       const p = this.simulator.participants.find(pp => pp.driver.baseId === ud.baseId);
       if (!p) return;
       const pos = this.simulator.participants.indexOf(p) + 1;
-      if (p.status === 'dsq') this.addTickerLine(`❌ ${ud.name}: DESCALIFICADO`, 'warning');
-      else if (p.status === 'dnf') this.addTickerLine(`⚠️ ${ud.name}: RETIRADO`, 'warning');
-      else if (pos <= 3) this.addTickerLine(`🎉 ${ud.name}: P${pos} ¡PODIO!`, 'highlight');
+      if (p.status === 'dsq') this.addTickerLine(`❌ ${ud.name}: ${this.lang === 'es' ? 'DESCALIFICADO' : 'DISQUALIFIED'}`, 'warning');
+      else if (p.status === 'dnf') this.addTickerLine(`⚠️ ${ud.name}: ${this.lang === 'es' ? 'RETIRADO' : 'RETIRED'}`, 'warning');
+      else if (pos <= 3) this.addTickerLine(`🎉 ${ud.name}: P${pos} ${this.lang === 'es' ? '¡PODIO!' : 'PODIUM!'}`, 'highlight');
       else this.addTickerLine(`📊 ${ud.name}: P${pos}`);
     });
+    if (!this.storySkipRequested) await sleep(400);
 
-    document.getElementById('story-subtitle').innerText = 'GP finalizado';
-    document.getElementById('btn-story-skip').innerText = 'VER RESULTADOS';
-    document.getElementById('btn-story-skip').classList.remove('hidden');
-    document.getElementById('btn-story-skip').onclick = () => {
+    // DNFs summary
+    const dnfs = this.simulator.participants.filter(p => p.status === 'dnf');
+    if (dnfs.length > 0) {
+      this.addTickerLine(`💥 ${this.lang === 'es' ? 'Abandonos' : 'Retirements'}: ${dnfs.map(d => d.driver.name).join(', ')}`);
+    }
+
+    document.getElementById('story-subtitle').innerText = this.lang === 'es' ? 'GP finalizado' : 'GP completed';
+    btnSkip.innerText = this.lang === 'es' ? 'VER RESULTADOS' : 'VIEW RESULTS';
+    btnSkip.classList.remove('hidden');
+    btnSkip.onclick = () => {
       this.showPostRaceStandings();
     };
   }

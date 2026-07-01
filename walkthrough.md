@@ -83,4 +83,13 @@ Se ha solucionado el problema donde los botones quedaban demasiado bajos y se so
    - **Menu Principal**: Se limitó el ancho del logotipo a `220px` y el texto explicativo a `13px` para prevenir que la pantalla inicial desborde verticalmente.
    - **Panel de Control de Pilotos**: Se compactaron los elementos internos de telemetría, ritmo y boxes, reduciendo significativamente la altura acumulada de ambas tarjetas de piloto en carrera.
    - **Botones de pestañas (`.tab-btn`)**: Tamaño de fuente a `9px` y padding a `6px 8px`.
-
+6. **Rediseño Completo del Slider (`input type="range"`)**:
+   - **Alineación Vertical**: Se rediseñó el contenedor del slider (`.slider-container`) de `24px` de alto para alinear el track y la barra de rango óptimo verticalmente en el centro exacto.
+   - **Track Independiente**: Se utiliza el pseudo-elemento `::before` de `.slider-container` para renderizar el fondo de carril (`#09090b` con borde retro), permitiendo que la barra de rango óptimo se dibuje en frente del carril y detrás del control deslizante sin ocultarse.
+   - **Input Transparente**: El input nativo ahora es 100% transparente para su pista, lo que expande su zona táctil a los `24px` del contenedor (mucho más cómodo en móvil) y conserva el look retro premium.
+   - **Control Deslizante (`thumb`) Retro**: El botón de arrastre ahora es una perilla vertical estilizada de `12px` de ancho (10px en móvil) y `20px` de alto (18px en móvil) con borde brillante en cian, encajando perfectamente con el resto del diseño retro 8-bit.
+7. **Progresión de Simulación Histórica (Carrera a Carrera)**:
+   - **Simulación Asíncrona**: Al pulsar "Simular campeonato completo" o "Simular GP", la simulación se ejecuta paso a paso usando pausas asíncronas (`setTimeout` de 400ms por hito de carrera y 800ms entre GPs).
+   - **Foco Automático en el Relato**: La pantalla del juego realiza un desplazamiento suave (`scrollIntoView`) directamente hacia la tarjeta de crónica `.story-ticker-card` al comenzar la simulación para centrar la atención del usuario en el relato en móviles y desktop.
+   - **Clasificación en Vivo Actualizada**: Por cada GP completado en la simulación paso a paso, la mini-clasificación en vivo de pilotos y constructores a la derecha del relato se actualiza dinámicamente al instante.
+   - **Botón de Salto Interactivo**: Durante el proceso paso a paso, se mantiene visible el botón "SALTAR ANIMACIÓN" que permite omitir inmediatamente todas las pausas de los GPs restantes y finalizar instantáneamente la temporada si el usuario así lo desea.
