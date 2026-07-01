@@ -1527,9 +1527,9 @@ body {
     gap: 8px;
   }
 
-  /* Make draft slots grid 2 columns on very small devices */
+  /* Make draft slots grid 3 columns on small devices */
   .draft-slots-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .draft-slot {
@@ -1545,6 +1545,74 @@ body {
   .slot-value {
     font-size: 10px;
   }
+
+  .draft-header {
+    margin-bottom: 6px !important;
+    padding: 8px !important;
+  }
+
+  .draft-header h2 {
+    font-size: 11px !important;
+    margin-bottom: 4px !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .draft-header p {
+    font-size: 10px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .draft-progress-bar-container {
+    height: 8px !important;
+    margin-top: 4px !important;
+  }
+
+  .draft-options-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    margin: 8px 0 !important;
+  }
+
+  .draft-option-card {
+    padding: 6px !important;
+  }
+
+  .draft-option-card .option-header {
+    margin-bottom: 4px !important;
+    padding-bottom: 2px !important;
+  }
+
+  .draft-option-card .option-era {
+    font-size: 8px !important;
+    padding: 1px 3px !important;
+  }
+
+  .draft-option-card .option-title {
+    font-size: 9px !important;
+    margin: 2px 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .draft-option-card .option-stats {
+    margin: 4px 0 !important;
+    gap: 3px !important;
+  }
+
+  .draft-option-card .stat-row {
+    font-size: 8px !important;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1px !important;
+  }
+
+  .draft-option-card .stat-bar-container {
+    display: none !important;
+  }
+
 
   /* Menu screen optimizations */
   .menu-logo-img {

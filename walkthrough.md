@@ -93,3 +93,9 @@ Se ha solucionado el problema donde los botones quedaban demasiado bajos y se so
    - **Foco Automático en el Relato**: La pantalla del juego realiza un desplazamiento suave (`scrollIntoView`) directamente hacia la tarjeta de crónica `.story-ticker-card` al comenzar la simulación para centrar la atención del usuario en el relato en móviles y desktop.
    - **Clasificación en Vivo Actualizada**: Por cada GP completado en la simulación paso a paso, la mini-clasificación en vivo de pilotos y constructores a la derecha del relato se actualiza dinámicamente al instante.
    - **Botón de Salto Interactivo**: Durante el proceso paso a paso, se mantiene visible el botón "SALTAR ANIMACIÓN" que permite omitir inmediatamente todas las pausas de los GPs restantes y finalizar instantáneamente la temporada si el usuario así lo desea.
+8. **Optimización de Pantalla de Draft Completa sin Scroll**:
+   - **Carreras de Opciones en Fila**: En móviles, las 3 opciones del Draft se muestran en una fila horizontal de 3 columnas (`grid-template-columns: repeat(3, 1fr)`) en lugar de apilarse en una columna gigante.
+   - **Ocultación de Barras de Progreso**: Se ocultan las barras de progreso gráficas de las estadísticas en las tarjetas de opciones de draft (`.draft-option-card .stat-bar-container { display: none }`), mostrando únicamente el valor numérico (ej. `8/10`). Esto evita desbordamiento horizontal y encoge verticalmente la tarjeta.
+   - **Encabezados Reducidos**: Se compactó la tarjeta superior de ronda `.draft-header`, reduciendo su margen y ocultando bordes redundantes.
+   - **Grilla de Slots de 3 Columnas**: Se reajustó la vista previa del equipo a 3 columnas (2 filas de 3 slots), reduciendo drásticamente la altura de la vista previa de 250px a 130px.
+   - **Resultado**: La pantalla de Draft ahora se muestra por completo en un área vertical de ~390px, permitiendo seleccionar y visualizar el estado del equipo sin necesidad de hacer scroll.
