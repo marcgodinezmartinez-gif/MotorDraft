@@ -106,99 +106,108 @@
 
       <!-- SCREEN 3: SEASON DASHBOARD -->
       <section id="screen-dashboard" class="screen">
-        <div class="dashboard-grid">
-          <!-- Column 1: Team & Next Race -->
-          <div class="dashboard-col">
-            <div class="card-retro my-team-card">
-              <h2 class="text-accent" data-i18n="dash_title">TU ESCUDERÍA</h2>
-              <div class="team-details">
-                <div class="detail-item"><span class="label" data-i18n="dash_label_drivers">Pilotos:</span> <span
-                    id="dash-drivers" class="value">--</span></div>
-                <div class="detail-item"><span class="label" data-i18n="dash_label_chassis">Chasis:</span> <span
-                    id="dash-chassis" class="value">--</span></div>
-                <div class="detail-item"><span class="label" data-i18n="dash_label_engine">Motor:</span> <span
-                    id="dash-engine" class="value">--</span></div>
-                <div class="detail-item"><span class="label" data-i18n="dash_label_tyres">Neumáticos:</span> <span
-                    id="dash-tyres" class="value">--</span></div>
-                <div class="detail-item"><span class="label" data-i18n="dash_label_principal">Jefe Equipo:</span> <span
-                    id="dash-principal" class="value">--</span></div>
+        <!-- Next Race -->
+        <div class="card-retro next-race-card">
+          <h2 class="text-accent"><span data-i18n="dash_next_gp">PRÓXIMA CARRERA</span> (<span
+              id="dash-race-num">1</span>/10)</h2>
+          <div class="circuit-banner">
+            <h3 id="dash-circuit-name" class="text-highlight">MONZA</h3>
+            <p id="dash-circuit-desc">Templo de la velocidad...</p>
+          </div>
+          <div class="circuit-stats-grid">
+            <div class="circ-stat">
+              <span class="label" data-i18n="dash_stat_speed">Velocidad</span>
+              <div class="stat-bar-container">
+                <div id="dash-circ-engine" class="stat-bar bg-cyan" style="width: 80%;"></div>
               </div>
             </div>
-
-            <div class="card-retro next-race-card">
-              <h2 class="text-accent"><span data-i18n="dash_next_gp">PRÓXIMA CARRERA</span> (<span
-                  id="dash-race-num">1</span>/10)</h2>
-              <div class="circuit-banner">
-                <h3 id="dash-circuit-name" class="text-highlight">MONZA</h3>
-                <p id="dash-circuit-desc">Templo de la velocidad...</p>
+            <div class="circ-stat">
+              <span class="label" data-i18n="dash_stat_aero">Carga Aero</span>
+              <div class="stat-bar-container">
+                <div id="dash-circ-aero" class="stat-bar bg-magenta" style="width: 30%;"></div>
               </div>
-              <div class="circuit-stats-grid">
-                <div class="circ-stat">
-                  <span class="label" data-i18n="dash_stat_speed">Velocidad</span>
-                  <div class="stat-bar-container">
-                    <div id="dash-circ-engine" class="stat-bar bg-cyan" style="width: 80%;"></div>
-                  </div>
-                </div>
-                <div class="circ-stat">
-                  <span class="label" data-i18n="dash_stat_aero">Carga Aero</span>
-                  <div class="stat-bar-container">
-                    <div id="dash-circ-aero" class="stat-bar bg-magenta" style="width: 30%;"></div>
-                  </div>
-                </div>
-                <div class="circ-stat">
-                  <span class="label" data-i18n="dash_stat_wear">Desgaste</span>
-                  <div class="stat-bar-container">
-                    <div id="dash-circ-wear" class="stat-bar bg-yellow" style="width: 50%;"></div>
-                  </div>
-                </div>
+            </div>
+            <div class="circ-stat">
+              <span class="label" data-i18n="dash_stat_wear">Desgaste</span>
+              <div class="stat-bar-container">
+                <div id="dash-circ-wear" class="stat-bar bg-yellow" style="width: 50%;"></div>
               </div>
-              <button id="btn-go-to-quali" class="btn-retro btn-large w-full mt-10" data-i18n="dash_go_quali">IR A
-                CLASIFICACIÓN (QUALI)</button>
-              <button id="btn-sim-championship" class="btn-retro btn-small w-full mt-10" style="opacity:0.85"
-                data-i18n="dash_sim_champ">⚡ SIMULAR CAMPEONATO COMPLETO</button>
             </div>
           </div>
+          <button id="btn-go-to-quali" class="btn-retro btn-large w-full mt-10" data-i18n="dash_go_quali">IR A
+            CLASIFICACIÓN (QUALI)</button>
+          <button id="btn-sim-championship" class="btn-retro btn-small w-full mt-10" style="opacity:0.85"
+            data-i18n="dash_sim_champ">⚡ SIMULAR CAMPEONATO COMPLETO</button>
+        </div>
 
-          <!-- Column 2: Standings -->
-          <div class="dashboard-col">
-            <div class="card-retro standings-card">
-              <div class="standings-tabs">
-                <button id="tab-drivers" class="tab-btn active" data-i18n="tab_drivers">PILOTOS</button>
-                <button id="tab-constructors" class="tab-btn" data-i18n="tab_constructors">CONSTRUCTORES</button>
-              </div>
+        <!-- Standings -->
+        <div class="card-retro standings-card">
+          <div class="standings-tabs">
+            <button id="tab-drivers" class="tab-btn active" data-i18n="tab_drivers">PILOTOS</button>
+            <button id="tab-constructors" class="tab-btn" data-i18n="tab_constructors">CONSTRUCTORES</button>
+          </div>
 
-              <!-- Drivers Standings Table -->
-              <div id="standings-drivers-view" class="standings-table-container">
-                <table class="table-retro">
-                  <thead>
-                    <tr>
-                      <th style="width: 10%">POS</th>
-                      <th style="width: 50%">PILOTO</th>
-                      <th style="width: 25%">ERA</th>
-                      <th style="width: 15%">PTS</th>
-                    </tr>
-                  </thead>
-                  <tbody id="dash-standings-drivers-body">
-                    <!-- Dynamic -->
-                  </tbody>
-                </table>
-              </div>
+          <!-- Drivers Standings Table -->
+          <div id="standings-drivers-view" class="standings-table-container">
+            <table class="table-retro">
+              <thead>
+                <tr>
+                  <th style="width: 10%">POS</th>
+                  <th style="width: 50%">PILOTO</th>
+                  <th style="width: 25%">ERA</th>
+                  <th style="width: 15%">PTS</th>
+                </tr>
+              </thead>
+              <tbody id="dash-standings-drivers-body">
+                <!-- Dynamic -->
+              </tbody>
+            </table>
+          </div>
 
-              <!-- Constructors Standings Table -->
-              <div id="standings-constructors-view" class="standings-table-container hidden">
-                <table class="table-retro">
-                  <thead>
-                    <tr>
-                      <th style="width: 10%">POS</th>
-                      <th style="width: 60%">CONSTRUCTOR / COMPONENTES</th>
-                      <th style="width: 30%">PTS</th>
-                    </tr>
-                  </thead>
-                  <tbody id="dash-standings-constructors-body">
-                    <!-- Dynamic -->
-                  </tbody>
-                </table>
-              </div>
+          <!-- Constructors Standings Table -->
+          <div id="standings-constructors-view" class="standings-table-container hidden">
+            <table class="table-retro">
+              <thead>
+                <tr>
+                  <th style="width: 10%">POS</th>
+                  <th style="width: 60%">CONSTRUCTOR / COMPONENTES</th>
+                  <th style="width: 30%">PTS</th>
+                </tr>
+              </thead>
+              <tbody id="dash-standings-constructors-body">
+                <!-- Dynamic -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Your Team (Styled like Draft Slots Grid) -->
+        <div class="card-retro my-team-card">
+          <h2 class="text-accent" data-i18n="dash_title">TU ESCUDERÍA</h2>
+          <div class="draft-slots-grid">
+            <div class="draft-slot filled" id="dash-slot-Chassis">
+              <span class="slot-label" data-i18n="slot_chassis">CHASIS</span>
+              <span class="slot-value" id="dash-chassis">--</span>
+            </div>
+            <div class="draft-slot filled" id="dash-slot-Engine">
+              <span class="slot-label" data-i18n="slot_engine">MOTOR</span>
+              <span class="slot-value" id="dash-engine">--</span>
+            </div>
+            <div class="draft-slot filled" id="dash-slot-Tyres">
+              <span class="slot-label" data-i18n="slot_tyres">NEUMÁTICOS</span>
+              <span class="slot-value" id="dash-tyres">--</span>
+            </div>
+            <div class="draft-slot filled" id="dash-slot-Driver1">
+              <span class="slot-label" data-i18n="slot_d1">PILOTO 1</span>
+              <span class="slot-value" id="dash-driver1">--</span>
+            </div>
+            <div class="draft-slot filled" id="dash-slot-Driver2">
+              <span class="slot-label" data-i18n="slot_d2">PILOTO 2</span>
+              <span class="slot-value" id="dash-driver2">--</span>
+            </div>
+            <div class="draft-slot filled" id="dash-slot-Principal">
+              <span class="slot-label" data-i18n="slot_principal">JEFE DE EQUIPO</span>
+              <span class="slot-value" id="dash-principal">--</span>
             </div>
           </div>
         </div>

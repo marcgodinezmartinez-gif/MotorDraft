@@ -1464,26 +1464,34 @@ body {
   }
   
   .game-header {
-    flex-direction: column;
-    gap: 6px;
-    align-items: center;
-    text-align: center;
-    padding: 8px 10px;
-    margin-bottom: 8px;
-    border-width: 2px;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 4px 8px !important;
+    margin-bottom: 6px !important;
+    border-width: 2px !important;
+    height: 32px !important;
   }
-  
+
   .header-logo h1 {
-    font-size: 18px;
+    font-size: 14px !important;
   }
-  
+
   .header-tagline {
-    font-size: 9px;
+    display: none !important;
   }
 
   .header-audio-control {
-    width: 100%;
-    justify-content: center;
+    width: auto !important;
+    display: flex !important;
+    gap: 4px !important;
+    justify-content: flex-end !important;
+  }
+
+  .header-audio-control .btn-retro {
+    font-size: 8px !important;
+    padding: 3px 6px !important;
+    line-height: 1 !important;
   }
 
   .card-retro {

@@ -45,7 +45,7 @@ const TRANSLATIONS = {
     th_pos: "POS",
     th_driver: "PILOTO",
     th_best_lap: "MEJOR VUELTA",
-    th_gap: "DIFERENCIA",
+    th_gap: "DIF.",
     quali_telemetry: "TELEMETRÍA EN TIEMPO REAL",
     quali_skip: "OMITIR ANIMACIÓN",
     quali_go_strat: "IR A PLANIFICAR ESTRATEGIA",
@@ -2214,11 +2214,25 @@ class App {
       }
     };
     const s = specs[this.lang];
-    document.getElementById('dash-drivers').innerText = `${this.userTeam.Driver1.name} / ${this.userTeam.Driver2.name}`;
-    document.getElementById('dash-chassis').innerText = `${this.userTeam.Chassis.name} (${s.aero}:${this.userTeam.Chassis.aero} ${s.downforce}:${this.userTeam.Chassis.downforce} ${s.weight}:${this.userTeam.Chassis.weight})`;
-    document.getElementById('dash-engine').innerText = `${this.userTeam.Engine.name} (${s.speed}:${this.userTeam.Engine.speed} ${s.reliability}:${this.userTeam.Engine.reliability})`;
-    document.getElementById('dash-tyres').innerText = `${this.userTeam.Tyres.name} (${s.wear}:${this.userTeam.Tyres.wearRate} ${s.temp}:${this.userTeam.Tyres.tempWindow})`;
-    document.getElementById('dash-principal').innerText = `${this.userTeam.Principal.name} (${s.box}:${this.userTeam.Principal.pitBonus} ${s.strategy}:${this.userTeam.Principal.strategyBonus})`;
+    const d1El = document.getElementById('dash-driver1');
+    const d2El = document.getElementById('dash-driver2');
+    if (d1El) d1El.innerText = this.userTeam.Driver1.name;
+    if (d2El) d2El.innerText = this.userTeam.Driver2.name;
+
+    const driversEl = document.getElementById('dash-drivers');
+    if (driversEl) driversEl.innerText = `${this.userTeam.Driver1.name} / ${this.userTeam.Driver2.name}`;
+
+    const chassisEl = document.getElementById('dash-chassis');
+    if (chassisEl) chassisEl.innerText = `${this.userTeam.Chassis.name} (${s.aero}:${this.userTeam.Chassis.aero} ${s.downforce}:${this.userTeam.Chassis.downforce} ${s.weight}:${this.userTeam.Chassis.weight})`;
+
+    const engineEl = document.getElementById('dash-engine');
+    if (engineEl) engineEl.innerText = `${this.userTeam.Engine.name} (${s.speed}:${this.userTeam.Engine.speed} ${s.reliability}:${this.userTeam.Engine.reliability})`;
+
+    const tyresEl = document.getElementById('dash-tyres');
+    if (tyresEl) tyresEl.innerText = `${this.userTeam.Tyres.name} (${s.wear}:${this.userTeam.Tyres.wearRate} ${s.temp}:${this.userTeam.Tyres.tempWindow})`;
+
+    const principalEl = document.getElementById('dash-principal');
+    if (principalEl) principalEl.innerText = `${this.userTeam.Principal.name} (${s.box}:${this.userTeam.Principal.pitBonus} ${s.strategy}:${this.userTeam.Principal.strategyBonus})`;
 
     // Next Race Card
     const currentRaceNum = this.championship.currentRaceIndex + 1;
@@ -2386,7 +2400,7 @@ class App {
 
       tr.innerHTML = `
         <td class="font-bold text-accent">P${idx + 1}</td>
-        <td>${car.driver.name} <span style="font-size:10px;color:var(--text-secondary)">[${car.team.name}]</span></td>
+        <td><strong>${car.driver.name}</strong></td>
         <td class="font-bold">${timeStr}</td>
         <td class="text-highlight font-bold">${gapStr}</td>
       `;
@@ -2794,8 +2808,7 @@ class App {
       tr.innerHTML = `
         <td class="font-bold text-accent">P${idx + 1}</td>
         <td>
-          <span class="driver-pos-badge" style="background-color:${p.isUserDriver ? 'var(--neon-cyan)' : 'var(--bg-primary)'};color:${p.isUserDriver ? 'var(--bg-primary)' : 'var(--text-secondary)'};font-size:10px;padding:1px 4px;margin-right:5px;">P${idx + 1}</span>
-          <strong>${p.driver.name}</strong> <span style="font-size:10px;color:var(--text-secondary)">(${p.team.name})</span>
+          <strong>${p.driver.name}</strong>
         </td>
         <td><span class="${compClass}">${p.tyreCompound.charAt(0)}</span></td>
         <td class="font-bold">${wearStr}</td>
